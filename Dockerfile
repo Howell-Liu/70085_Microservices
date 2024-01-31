@@ -1,11 +1,20 @@
-FROM ubuntu
-RUN apt update && apt install -y python3 python3-pip
+# Use an official Python runtime as a parent image
+FROM python:3.11-slim
 
-RUN mkdir /usr/share/flask-app
-COPY . /usr/share/flask-app
+# Set the working directory to /app
+WORKDIR /app
 
-WORKDIR /usr/share/flask-app
-RUN pip install -r requirements.txt
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-CMD ["flask", "--app", "app", "run", "--host", "0.0.0.0"]
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+# Define environment variable
+# ENV NAME World
+
+# Run app.py when the container launches
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
