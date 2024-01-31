@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  server:
+    # build: .
+    image: ghcr.io/joeykyleung/microservices
+    ports:
+      - "8080:80"
+
+  client:
+    image: ghcr.io/joeykyleung/microservices-client
+    environment:
+      BOOK_URL: "http://book-api-microservice.bgadgue6h5fraycd.uksouth.azurecontainer.io"
