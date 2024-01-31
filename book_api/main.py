@@ -1,5 +1,4 @@
-from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import json
 
 app = FastAPI()
@@ -17,6 +16,16 @@ def read_root():
 @app.get("/books/{book_id}")
 def read_item(book_id: int):
     if book_id >= len(data['books']):
-        return "Index out of bounds"
+        raise HTTPException(status_code=500, detail="Index out of bounds")
     else:
         return data['books'][book_id-1]
+    
+@app.get("/books")
+def read_books(genre: str = None):
+    if genre:
+        res = []
+        for book in data['books']:
+            if genre.lower() in book['genre'].lower():
+                res.append(book)
+        return res
+    return data['books']
