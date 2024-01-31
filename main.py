@@ -1,9 +1,13 @@
 from typing import Union
 from fastapi import FastAPI
+import json
 import books
 
 app = FastAPI()
 
+
+with open('data.json', 'r') as file:
+    books_data = json.load(file)
 
 @app.get("/")
 def read_root():
