@@ -1,11 +1,18 @@
+from typing import Union
 from fastapi import FastAPI
 import json
 
 app = FastAPI()
 
+
 with open('data.json', 'r') as file:
     books_data = json.load(file)
 
 @app.get("/")
-async def root():
-    return books_data
+def read_root():
+    return {"Hello": "World"}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
